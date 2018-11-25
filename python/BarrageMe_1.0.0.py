@@ -9,7 +9,8 @@ Then have FUN!!!
 
 #导入模块~
 
-import sys, datetime, pymysql, time, colorlog
+import sys, datetime, pymysql, time, colorlog, threading, multiprocessing
+from multiprocessing import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -33,9 +34,9 @@ def getPos():
 
 def readBarrage():
     #检测并获取弹幕
+    global num
     global db
     global cursor
-    global num
     cursor.execute("SELECT * FROM BARRAGE limit " + str(num) + "," + str(num+1))
     rs = cursor.fetchone()
     if rs == None:
@@ -74,75 +75,68 @@ def div():
     print("+--------------------------------------------+")
     print()
 
-def initUI():#不再使用
-    #尝试使用Qtime进行延时操作
-    #w.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
-    #w.setAttribute(Qt.WA_TransparentForMouseEvents)
-    #w.setAttribute(Qt.WA_TranslucentBackground)
-    qbtn = QPushButton('Quit', w)
-    qbtn.clicked.connect(QCoreApplication.instance().quit)
-    qbtn.resize(qbtn.sizeHint())
-    qbtn.move(50, 50)  
-    w.setGeometry(0, 0, 1920, 1080)
-    w.show()
-    showInfo("UI init succeed!")
+class fetchBarrages(QThread):
     
+    showBarragesig = pyqtSignal(tuple)
+    def __int__(self):
+        super(fetchBarrages,self).__init__()
+    def run(self):
+        global cursor
+        
+        while 1:
+            time.sleep(0.5)
+            barrage = readBarrage()
+            if barrage == None:
+                continue
+            if barrage[3] == 'Stop()':
+                app.quit()
+            #c = Communicate()
+            #c.showBarrage.connect(barrageUI.showBarrage(barrage[3],barrage[4]))
+            self.showBarragesig.emit((barrage[3],barrage[4]))
+            #barrageUI.showBarrage(barrage[3],barrage[4])
 
+    
 class UI(QWidget):
     def __init__(self):
         super().__init__()
+        global backend
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
         self.setAttribute(Qt.WA_TransparentForMouseEvents)
         self.setAttribute(Qt.WA_TranslucentBackground)
         qbtn = QPushButton('Pause', self)
         qbtn.resize(qbtn.sizeHint())
         qbtn.move(50, 50)  
+        #backend = fetchBarrages()
         showInfo("UI init succeed!")
         #self.fetch()
         #timer = QTimer()
         #timer.timeout.connect(self.fetch)
         #timer.start(500)
-        qbtn.clicked.connect(self.fetch)
         self.setGeometry(0, 0, 1920, 1080)
+        backend.showBarragesig.connect(self.showBarrage)
         self.show()
-        #qbtn.setVisible(False)
+        qbtn.setVisible(False)      
 
-
-        
-    def fetch(self):
-        barrage = readBarrage()
-        if barrage == None:
-            return
-        if barrage[3] == 'Stop()':
-            app.quit()
-        self.showBarrage(barrage[3],barrage[4])
-        global barrageLabel
-        
-
-    def showBarrage(nothing, bText, bColor):
+    def showBarrage(nothing, barrage):
         global UI
         global barrageLabel
         global nowPos
-        print(nothing,bText,bColor)
+        print(nothing , "123" , barrage)
         nowPos = getPos()
         barrageLabel = QLabel(barrageUI)
-        barrageLabel.setText(bText)
+        barrageLabel.setText(barrage[0])
         barrageLabel.move(1920,nowPos)
         barrageLabel.setStyleSheet("font: bold 20pt '微软雅黑'")
         barragePalette = QPalette()
-        barragePalette.setColor(QPalette.WindowText,QColor(bColor))
+        barragePalette.setColor(QPalette.WindowText,QColor(barrage[1]))
         barrageLabel.setPalette(barragePalette)
         barrageAnim = QPropertyAnimation(barrageLabel,b"pos")
         barrageAnim.setDuration(10000)
         barrageAnim.setStartValue(QPoint(1920, nowPos))
-        barrageAnim.setEndValue(QPoint(0-barrageLabel.width()-100, nowPos))
+        barrageAnim.setEndValue(QPoint(0-barrageLabel.width()-300, nowPos))
         barrageLabel.show()
         barrageAnim.start()
-        #qSleep(10000)
         dieTime = QTime.currentTime().addSecs(10)
-        #print(str(dieTime))
-        #dieTime.addSecs(10)
-        #print(dieTime)
         while QTime.currentTime() < dieTime:
             QCoreApplication.processEvents(QEventLoop.AllEvents, 1)
 
@@ -150,7 +144,7 @@ class UI(QWidget):
 #Here we go~
 
 div()
-print("BarrageMe Beta Verson 0.0.5")
+print("BarrageMe Beta Verson 1.0.0")
 print("Developed by 三生烟火 or ssYanhuo")
 div()
 showInfo("Connecting to Database...")
@@ -168,39 +162,33 @@ else:
     showInfo("Host:127.0.0.1")
     div()
 
+
 input("Press Enter to Start")
 div()
 
 showInfo("Starting fetch Barrages...")
 div()
 
+
+
+
 #初始化UI
-'''app = QApplication(sys.argv)
-w = QWidget()
-initUI()
-app.exec_()'''
 global num
 num = 0
 vPos = 0
 barrageLabel = 0
+
+
+backend = fetchBarrages()
 app = QApplication(sys.argv)
 barrageUI = UI()
-app.exec_()
+
+backend.start()
+#qbtn.setVisible(False)
+
+app.exec()
 
 
-
-'''while 1:
-    barrage = readBarrage()
-    if barrage == None:
-        time.sleep(0.5)
-        continue
-    if barrage[3] == 'Stop()':
-        if input("Stop Command Founded, Do You Want to Stop Fetching?(Y/N)") == 'Y':
-            break
-        else:
-            continue
-    time.sleep(0.5)'''
-    
 
 #关闭连接
 div()

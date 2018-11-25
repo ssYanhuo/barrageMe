@@ -30,6 +30,7 @@ cursor = db.cursor()
 
 #向数据库中插入一条弹幕
 
+
 cursor.execute("INSERT INTO barrage (ip,text,time,color) VALUES ('" + ipAds + "','" + bText[0] + "','" + dt + "','" + bColor[0] + "' )")
 db.commit()
 
@@ -46,9 +47,11 @@ print("Content-type:text/html")
 print("")
 print("<body>")
 print("Success!")
-print("弹幕内容:" + bText)
+print(bText)
+print(bColor)
+print("弹幕内容:" + bText[0])
 print("IP:" + ipAds)
 print("时间:" + dt)
-print("颜色:" + bColor)
+print("颜色:" + bColor[0])
 print("<script>alert('发送成功！')</script>")
 print("</body>")

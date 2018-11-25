@@ -22,7 +22,7 @@ function changeColor(){
 }
 
 function sendBarrage(){
-    if ($('#barrage').val().length > 32 || $('#barrage').val().length == 0){
+    if ($('#barrage').val().length > 11 || $('#barrage').val().length == 0){
         mdui.snackbar({
             message: 'Σ(ﾟдﾟlll)似乎出了点问题……'
         });
@@ -40,21 +40,20 @@ function sendBarrage(){
     }
     $("#progress").fadeIn();
     $("#submit-button").attr("disabled","disabled");
+    //alert($('#barrage').val())
 	$("#bform").ajaxSubmit({
 		type:'post',
 		url:'cgi-bin/backend_post.py',
+        dataType:"json",
 		data:{
 			btext:$('#barrage').val(),
 			bcolor:$('#bcolor').val()
 		},
 		success:function(){
-
+            
 		},
 		error:function(){
-			mdui.snackbar({
-                message: '发送失败'
-            });
-            return false;
+			
 		}
 	});
     setTimeout('$("#submit-button").delay("2000").removeAttr("disabled")', 2000); 
@@ -66,7 +65,7 @@ function sendBarrage(){
 	return false;
 }
 function isEmpty(){
-    if ($('#barrage').val().length <= 32 && $('#barrage').val().length != 0){
+    if ($('#barrage').val().length <= 11 && $('#barrage').val().length != 0){
         $('#binput').removeClass("mdui-textfield-invalid")
     }
 }
