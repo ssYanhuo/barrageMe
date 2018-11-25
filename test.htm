@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- load MUI and jQuery -->
+	<link href="css/mdui.min.css" rel="stylesheet" type="text/css" />
+	<script src="js/mdui.min.js" ></script>
+    <script src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/jquery.form.js"></script>
+	<script src="js/barrageMe.js"></script>
+	<script src="js/jquery.color-2.1.2.min.js"></script>
+    <title>一起来发弹幕吧~</title></head>
+  
+  <body class="mdui-theme-primary-blue mdui-theme-accent-amber">
+    <div class="mdui-toolbar mdui-color-theme mdui-shadow-4">
+		<span class="mdui-typo-title " style="color: white">一起来发弹幕吧~</span>
+    </div>
+    <!-- Main container -->
+    <div class="mdui-container" style="margin-top: 20px">
+      <div class="mdui-table">
+        <form id="bform" action="cgi-bin/backend_post.py" method="post" class="mui-form" onSubmit="return sendBarrage()">
+          <div class="mdui-textfield mdui-textfield-floating-label " style="display: inline-block; width: 75%">
+			<label class="mdui-textfield-label">在这里输入内容~</label>
+            <input class="mdui-textfield-input" id="barrage" name="btext">
+            </div>
+          <div class="" style="display: inline-block; width: 20%">
+            <select class="mdui-select mdui-select-position-auto" id="bcolor" name="bcolor" style="color:rgba(191,191,191,1.00)" onChange="changeColor()" mdui-select>
+              <option value="#ffffff">今夜白</option>
+              <!--#ffffff-->
+              <option value="#607d8b">低调灰</option>
+              <!--#607d8b-->
+              <option value="#009688">水鸭青</option>
+              <!--#009688-->
+              <option value="#795548">古铜棕</option>
+              <!--#795548-->
+              <option value="#212121">高端黑</option>
+              <!--#212121-->
+              <option value="#fb7299">哔哩粉</option>
+              <!--#fb7299-->
+              <option value="#ff9800">伊藤橙</option>
+              <!--#ff9800-->
+              <option value="#66ccff">天依蓝</option>
+              <!--#66ccff-->
+              <option value="#ee0000">乐正红</option>
+              <!--#ee0000-->
+              <option value="#99ffff">言和绿</option>
+              <!--#99ffff-->
+              <option value="#9900cc">烟火紫</option>
+              <!--#9900cc-->
+			 </select>
+          </div>
+			<br />
+          <input id="submit-button" name="submit-button" type="submit" class="mui-btn mui-btn--primary mui-btn--raised" style="background-color:#ffc107" value="发送！"></input>
+		  
+		  </form>
+      </div>
+    </div>
+    <div style="width: 100%; position: absolute; bottom: 20px; opacity: 0.5; text-align: center; line-height: 15px">
+      <p>Web UI By
+        <a href="https://www.muicss.com/" style="color: darkblue">MUI</a> CSS Framework and
+        <a href="https://jquery.com/" style="color: darkblue">jQuery</a></p>
+      <p>Powered By
+        <a href="https://www.python.org/" style="color: darkblue">Python </a>and
+        <a href="https://www.mysql.com/" style="color: darkblue">MySQL</a></p>
+      <p>Animation By
+        <a href="https://pypi.org/project/PyQt5/" style="color: darkblue">PyQt5</a></p>
+      <p>Developed By
+        <a href="https://github.com/ssYanhuo" style="color: darkblue">三生烟火</a></p>
+    </div>
+  </body>
+
+</html>
