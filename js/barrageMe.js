@@ -22,7 +22,7 @@ function changeColor(){
 }
 
 function sendBarrage(){
-    if ($('#barrage').val().length >= 32 || $('#barrage').val().length == 0){
+    if ($('#barrage').val().length > 32 || $('#barrage').val().length == 0){
         mdui.snackbar({
             message: 'Σ(ﾟдﾟlll)似乎出了点问题……'
         });
@@ -38,7 +38,6 @@ function sendBarrage(){
         $('#binput').addClass("mdui-textfield-invalid")
         return false;
     }
-    
     $("#progress").fadeIn();
     $("#submit-button").attr("disabled","disabled");
 	$("#bform").ajaxSubmit({
@@ -65,4 +64,9 @@ function sendBarrage(){
     $("#barrage").val("");
 //	alert(${pageContext.request.contextPath})
 	return false;
+}
+function isEmpty(){
+    if ($('#barrage').val().length <= 32 && $('#barrage').val().length != 0){
+        $('#binput').removeClass("mdui-textfield-invalid")
+    }
 }

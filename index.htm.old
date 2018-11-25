@@ -6,28 +6,36 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- load MUI and jQuery -->
+    <link href="./css/mui.min.css" rel="stylesheet" type="text/css" />
 	<link href="css/mdui.min.css" rel="stylesheet" type="text/css" />
 	<script src="js/mdui.min.js" ></script>
+    <script src="./js/mui.min.js"></script>
     <script src="js/jquery-3.3.1.min.js"></script>
 	<script src="js/jquery.form.js"></script>
 	<script src="js/barrageMe.js"></script>
 	<script src="js/jquery.color-2.1.2.min.js"></script>
     <title>一起来发弹幕吧~</title></head>
   
-  <body class="mdui-theme-primary-blue mdui-theme-accent-amber">
-    <div class="mdui-toolbar mdui-color-theme mdui-shadow-4">
-		<span class="mdui-typo-title " style="color: white">一起来发弹幕吧~</span>
-    </div>
+  <body>
+    <header class="mui-appbar mui--z1">
+      <div class="mui-container">
+        <table>
+          <tbody>
+            <tr class="mui--appbar-height">
+              <td class="mui--text-title">一起来发弹幕吧~</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </header>
     <!-- Main container -->
-    <div class="mdui-container" style="margin-top: 20px">
-      <div class="mdui-table">
+    <div class="mui-container" style="margin-top: 20px">
+      <div class="mui-panel">
         <form id="bform" action="cgi-bin/backend_post.py" method="post" class="mui-form" onSubmit="return sendBarrage()">
-          <div class="mdui-textfield mdui-textfield-floating-label " style="display: inline-block; width: 75%">
-			<label class="mdui-textfield-label">在这里输入内容~</label>
-            <input class="mdui-textfield-input" id="barrage" name="btext">
-            </div>
-          <div class="" style="display: inline-block; width: 20%">
-            <select class="mdui-select mdui-select-position-auto" id="bcolor" name="bcolor" style="color:rgba(191,191,191,1.00)" onChange="changeColor()" mdui-select>
+          <div class="mui-textfield mui-textfield--float-label " style="display: inline-block; width: 75%">
+            <input class="mui--is-touched mui--is-pristine mui--is-empty" id="barrage" name="btext">
+            <label tabindex="-1" style="transition:0.15s ease-out;">在这里输入内容~</label></div>
+          <div class="mui-select" style="display: inline-block; width: 20%">
+            <select id="bcolor" name="bcolor" style="color:rgba(191,191,191,1.00)" onChange="changeColor()">
               <option value="#ffffff">今夜白</option>
               <!--#ffffff-->
               <option value="#607d8b">低调灰</option>
