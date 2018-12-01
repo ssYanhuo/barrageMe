@@ -76,13 +76,11 @@ def div():
     print()
 
 class fetchBarrages(QThread):
-    
     showBarragesig = pyqtSignal(tuple)
     def __int__(self):
-        super(fetchBarrages,self).__init__()
+        super(fetchBarrages , self).__init__()
     def run(self):
-        global cursor
-        
+        global cursor      
         while 1:
             time.sleep(0.5)
             barrage = readBarrage()
@@ -94,8 +92,7 @@ class fetchBarrages(QThread):
             #c.showBarrage.connect(barrageUI.showBarrage(barrage[3],barrage[4]))
             self.showBarragesig.emit((barrage[3],barrage[4]))
             #barrageUI.showBarrage(barrage[3],barrage[4])
-
-    
+  
 class UI(QWidget):
     def __init__(self):
         super().__init__()
@@ -117,15 +114,15 @@ class UI(QWidget):
         self.show()
         qbtn.setVisible(False)      
 
-    def showBarrage(nothing, barrage):
+    def showBarrage(self, barrage):
         global UI
         global barrageLabel
         global nowPos
-        print(nothing , "123" , barrage)
+        #print(barrage)
         nowPos = getPos()
         barrageLabel = QLabel(barrageUI)
         barrageLabel.setText(barrage[0])
-        barrageLabel.move(1920,nowPos)
+        barrageLabel.move(1920 , nowPos)
         barrageLabel.setStyleSheet("font: bold 20pt '微软雅黑'")
         barragePalette = QPalette()
         barragePalette.setColor(QPalette.WindowText,QColor(barrage[1]))
